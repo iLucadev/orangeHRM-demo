@@ -1,8 +1,11 @@
 package ar.org.icaro.pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.List;
 
 /**
  * LoginPage - Page Object para la página de login de OrangeHRM
@@ -29,6 +32,12 @@ public class LoginPage extends BasePage {
 
     @FindBy(css = ".orangehrm-login-slot")
     private WebElement loginPanel;
+
+    @FindBy(css = ".oxd-alert-content-text")
+    private WebElement errorMessage;
+
+    @FindBy(css = ".oxd-input-field-error-message")
+    private List<WebElement> requiredFieldMessages;
 
     private static final String LOGIN_URL = "https://opensource-demo.orangehrmlive.com/";
 
@@ -79,5 +88,42 @@ public class LoginPage extends BasePage {
     // ===============================
     public boolean isOnLoginPage() {
         return isElementVisible(loginPanel);
+    }
+
+    /**
+     * Verifica si se muestra mensaje de error de credenciales inválidas
+     */
+    public boolean isErrorDisplayed() {
+        return isElementVisible(errorMessage);
+    }
+
+    /**
+     * Obtiene el texto del mensaje de error
+     */
+    public String getErrorMessage() {
+        return getText(errorMessage);
+    }
+
+    /**
+     * Verifica si se muestra mensaje de campo requerido
+     */
+    public boolean isRequiredFieldMessageDisplayed() {
+        try {
+            return !requiredFieldMessages.isEmpty() && requiredFieldMessages.get(0).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Verifica si se muestran múltiples mensajes de campos requeridos
+     */
+    public boolean areRequiredFieldMessagesDisplayed() {
+        try {
+            return requiredFieldMessages.size() >= 2 &&
+                   requiredFieldMessages.stream().allMatch(WebElement::isDisplayed);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 }

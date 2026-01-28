@@ -131,6 +131,42 @@ public class FlujoPrincipalSteps {
         );
     }
 
+    @Then("debería ver un mensaje de error")
+    public void iShouldSeeErrorMessage() {
+        System.out.println("   → Verificando mensaje de error");
+        Assert.assertTrue(
+                loginPage.isErrorDisplayed(),
+                "Debería mostrarse mensaje de error de credenciales inválidas"
+        );
+    }
+
+    @Then("debería permanecer en la página de login")
+    public void iShouldRemainOnLoginPage() {
+        System.out.println("   → Verificando que permanezco en login");
+        Assert.assertTrue(
+                loginPage.isOnLoginPage(),
+                "Debería permanecer en la página de login después de error"
+        );
+    }
+
+    @Then("debería ver un mensaje de campo requerido")
+    public void iShouldSeeRequiredFieldMessage() {
+        System.out.println("   → Verificando mensaje de campo requerido");
+        Assert.assertTrue(
+                loginPage.isRequiredFieldMessageDisplayed(),
+                "Debería mostrarse mensaje de campo requerido"
+        );
+    }
+
+    @Then("debería ver mensajes de campos requeridos")
+    public void iShouldSeeRequiredFieldsMessages() {
+        System.out.println("   → Verificando mensajes de campos requeridos");
+        Assert.assertTrue(
+                loginPage.areRequiredFieldMessagesDisplayed(),
+                "Deberían mostrarse mensajes de campos requeridos"
+        );
+    }
+
     // ===============================
     // NOTA SOBRE AND STEPS
     // ===============================
