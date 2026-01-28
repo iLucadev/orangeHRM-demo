@@ -1,7 +1,8 @@
 package ar.org.icaro.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * LoginPage - Page Object para la página de login de OrangeHRM
@@ -17,10 +18,17 @@ public class LoginPage extends BasePage {
     // ===============================
     // LOCALIZADORES
     // ===============================
-    private By usernameField = By.name("username");
-    private By passwordField = By.name("password");
-    private By loginButton = By.cssSelector("button[type='submit']");
-    private By loginPanel = By.cssSelector(".orangehrm-login-slot");
+    @FindBy(name = "username")
+    private WebElement usernameField;
+
+    @FindBy(name = "password")
+    private WebElement passwordField;
+
+    @FindBy(css = "button[type='submit']")
+    private WebElement loginButton;
+
+    @FindBy(css = ".orangehrm-login-slot")
+    private WebElement loginPanel;
 
     private static final String LOGIN_URL = "https://opensource-demo.orangehrmlive.com/";
 
@@ -28,7 +36,7 @@ public class LoginPage extends BasePage {
     // CONSTRUCTOR
     // ===============================
     public LoginPage(WebDriver driver) {
-        super(driver);  // Inicializa driver y wait en BasePage
+        super(driver);
     }
 
     // ===============================
@@ -43,17 +51,17 @@ public class LoginPage extends BasePage {
     // MÉTODOS DE INTERACCIÓN
     // ===============================
     public LoginPage enterUserName(String username) {
-        type(usernameField, username);  // Usa método heredado
+        type(usernameField, username);
         return this;
     }
 
     public LoginPage enterPassword(String password) {
-        type(passwordField, password);  // Usa método heredado
+        type(passwordField, password);
         return this;
     }
 
     public DashboardPage clickLogin() {
-        click(loginButton);  // Usa método heredado
+        click(loginButton);
         return new DashboardPage(driver);
     }
 
@@ -70,6 +78,6 @@ public class LoginPage extends BasePage {
     // VERIFICACIONES
     // ===============================
     public boolean isOnLoginPage() {
-        return isElementVisible(loginPanel);  // Usa método heredado
+        return isElementVisible(loginPanel);
     }
 }

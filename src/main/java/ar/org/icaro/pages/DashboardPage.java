@@ -2,6 +2,8 @@ package ar.org.icaro.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * DashboardPage - Page Object para el Dashboard de OrangeHRM
@@ -17,33 +19,41 @@ public class DashboardPage extends BasePage {
     // ===============================
     // LOCALIZADORES
     // ===============================
-    private By dashboardHeader = By.cssSelector("h6.oxd-topbar-header-breadcrumb-module");
-    private By pimMenuItem = By.xpath("//span[text()='PIM']");
-    private By userDropdown = By.cssSelector(".oxd-userdropdown-tab");
-    private By logoutLink = By.xpath("//a[text()='Logout']");
+    @FindBy(css = "h6.oxd-topbar-header-breadcrumb-module")
+    private WebElement dashboardHeader;
+
+    @FindBy(xpath = "//span[text()='PIM']")
+    private WebElement pimMenuItem;
+
+    @FindBy(css = ".oxd-userdropdown-tab")
+    private WebElement userDropdown;
+
+    @FindBy(xpath = "//a[text()='Logout']")
+    private WebElement logoutLink;
+
     private By loadingSpinner = By.cssSelector(".oxd-loading-spinner");
 
     // ===============================
     // CONSTRUCTOR
     // ===============================
     public DashboardPage(WebDriver driver) {
-        super(driver);  // Inicializa driver y wait en BasePage
+        super(driver);
     }
 
     // ===============================
     // MÉTODOS DE NAVEGACIÓN
     // ===============================
     public PIMPage goToPIM() {
-        waitForElementToDisappear(loadingSpinner);  // Método heredado
-        waitForUrlContains("dashboard");             // Método heredado
-        click(pimMenuItem);                          // Método heredado
+        waitForElementToDisappear(loadingSpinner);
+        waitForUrlContains("dashboard");
+        click(pimMenuItem);
         return new PIMPage(driver);
     }
 
     public LoginPage logout() {
-        waitForElementToDisappear(loadingSpinner);  // Método heredado
-        click(userDropdown);                        // Método heredado
-        click(logoutLink);                          // Método heredado
+        waitForElementToDisappear(loadingSpinner);
+        click(userDropdown);
+        click(logoutLink);
         return new LoginPage(driver);
     }
 
@@ -51,10 +61,10 @@ public class DashboardPage extends BasePage {
     // VERIFICACIONES
     // ===============================
     public boolean isOnDashboard() {
-        return waitForUrlContains("dashboard");  // Método heredado
+        return waitForUrlContains("dashboard");
     }
 
     public String getHeaderText() {
-        return getText(dashboardHeader);  // Método heredado
+        return getText(dashboardHeader);
     }
 }

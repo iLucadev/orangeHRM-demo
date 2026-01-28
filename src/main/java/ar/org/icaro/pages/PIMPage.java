@@ -2,6 +2,8 @@ package ar.org.icaro.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 /**
  * PIMPage - Page Object para el módulo PIM (Personnel Information Management)
@@ -17,24 +19,30 @@ public class PIMPage extends BasePage {
     // ===============================
     // LOCALIZADORES
     // ===============================
-    private By employeeNameInput = By.xpath("(//input[@placeholder='Type for hints...'])[1]");
-    private By searchButton = By.cssSelector("button[type='submit']");
-    private By resultsTable = By.cssSelector(".oxd-table-card");
+    @FindBy(xpath = "(//input[@placeholder='Type for hints...'])[1]")
+    private WebElement employeeNameInput;
+
+    @FindBy(css = "button[type='submit']")
+    private WebElement searchButton;
+
+    @FindBy(css = ".oxd-table-card")
+    private WebElement resultsTable;
+
     private By loadingSpinner = By.cssSelector(".oxd-loading-spinner");
 
     // ===============================
     // CONSTRUCTOR
     // ===============================
     public PIMPage(WebDriver driver) {
-        super(driver);  // Inicializa driver y wait en BasePage
+        super(driver);
     }
 
     // ===============================
     // MÉTODOS DE INTERACCIÓN
     // ===============================
     public PIMPage searchEmployeeByName(String employeeName) {
-        waitForElementToDisappear(loadingSpinner);  // Método heredado
-        type(employeeNameInput, employeeName);      // Método heredado
+        waitForElementToDisappear(loadingSpinner);
+        type(employeeNameInput, employeeName);
 
         // Esperar para autocomplete (OrangeHRM usa autocomplete)
         try {
@@ -43,8 +51,8 @@ public class PIMPage extends BasePage {
             e.printStackTrace();
         }
 
-        click(searchButton);                        // Método heredado
-        waitForElementToDisappear(loadingSpinner);  // Método heredado
+        click(searchButton);
+        waitForElementToDisappear(loadingSpinner);
 
         return this;
     }
@@ -53,10 +61,10 @@ public class PIMPage extends BasePage {
     // VERIFICACIONES
     // ===============================
     public boolean isOnPIMPage() {
-        return waitForUrlContains("pim");  // Método heredado
+        return waitForUrlContains("pim");
     }
 
     public boolean hasResults() {
-        return isElementVisible(resultsTable);  // Método heredado
+        return isElementVisible(resultsTable);
     }
 }
