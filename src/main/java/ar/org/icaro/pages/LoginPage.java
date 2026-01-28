@@ -2,27 +2,17 @@ package ar.org.icaro.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 /**
  * LoginPage - Page Object para la página de login de OrangeHRM
  *
- * Clase 10: Page Object Model básico
- * - Cada Page Object tiene su propio driver y wait
- * - Localizadores privados
- * - Métodos públicos de interacción
+ * Clase 11: Refactorizado para usar BasePage
+ * - Extiende de BasePage para heredar driver, wait y métodos comunes
+ * - Usa super(driver) para inicializar la clase padre
+ * - Usa métodos heredados: type(), click(), isElementVisible()
+ * - Elimina código duplicado
  */
-public class LoginPage {
-
-    // ===============================
-    // ATRIBUTOS
-    // ===============================
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class LoginPage extends BasePage {
 
     // ===============================
     // LOCALIZADORES
@@ -38,8 +28,7 @@ public class LoginPage {
     // CONSTRUCTOR
     // ===============================
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        super(driver);  // Inicializa driver y wait en BasePage
     }
 
     // ===============================
@@ -54,25 +43,17 @@ public class LoginPage {
     // MÉTODOS DE INTERACCIÓN
     // ===============================
     public LoginPage enterUserName(String username) {
-        WebElement element = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(usernameField)
-        );
-        element.clear();
-        element.sendKeys(username);
+        type(usernameField, username);  // Usa método heredado
         return this;
     }
 
     public LoginPage enterPassword(String password) {
-        WebElement element = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(passwordField)
-        );
-        element.clear();
-        element.sendKeys(password);
+        type(passwordField, password);  // Usa método heredado
         return this;
     }
 
     public DashboardPage clickLogin() {
-        wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+        click(loginButton);  // Usa método heredado
         return new DashboardPage(driver);
     }
 
@@ -89,11 +70,6 @@ public class LoginPage {
     // VERIFICACIONES
     // ===============================
     public boolean isOnLoginPage() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(loginPanel));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return isElementVisible(loginPanel);  // Usa método heredado
     }
 }

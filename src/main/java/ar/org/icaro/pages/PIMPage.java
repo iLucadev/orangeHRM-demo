@@ -1,29 +1,18 @@
 package ar.org.icaro.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 /**
  * PIMPage - Page Object para el módulo PIM (Personnel Information Management)
  *
- * Clase 10: Page Object Model básico
- * - Cada Page Object tiene su propio driver y wait
- * - Localizadores privados
- * - Métodos públicos de interacción
+ * Clase 11: Refactorizado para usar BasePage
+ * - Extiende de BasePage para heredar driver, wait y métodos comunes
+ * - Usa super(driver) para inicializar la clase padre
+ * - Usa métodos heredados: type(), click(), isElementVisible(), waitForUrlContains(), waitForElementToDisappear()
+ * - Elimina métodos auxiliares duplicados
  */
-public class PIMPage {
-
-    // ===============================
-    // ATRIBUTOS
-    // ===============================
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class PIMPage extends BasePage {
 
     // ===============================
     // LOCALIZADORES
@@ -37,23 +26,15 @@ public class PIMPage {
     // CONSTRUCTOR
     // ===============================
     public PIMPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        super(driver);  // Inicializa driver y wait en BasePage
     }
 
     // ===============================
     // MÉTODOS DE INTERACCIÓN
     // ===============================
     public PIMPage searchEmployeeByName(String employeeName) {
-        // Esperar que desaparezca el spinner
-        waitForLoadingSpinnerToDisappear();
-
-        // Ingresar nombre del empleado
-        WebElement nameInput = wait.until(
-            ExpectedConditions.visibilityOfElementLocated(employeeNameInput)
-        );
-        nameInput.clear();
-        nameInput.sendKeys(employeeName);
+        waitForElementToDisappear(loadingSpinner);  // Método heredado
+        type(employeeNameInput, employeeName);      // Método heredado
 
         // Esperar para autocomplete (OrangeHRM usa autocomplete)
         try {
@@ -62,11 +43,8 @@ public class PIMPage {
             e.printStackTrace();
         }
 
-        // Click en buscar
-        wait.until(ExpectedConditions.elementToBeClickable(searchButton)).click();
-
-        // Esperar que carguen resultados
-        waitForLoadingSpinnerToDisappear();
+        click(searchButton);                        // Método heredado
+        waitForElementToDisappear(loadingSpinner);  // Método heredado
 
         return this;
     }
@@ -75,35 +53,10 @@ public class PIMPage {
     // VERIFICACIONES
     // ===============================
     public boolean isOnPIMPage() {
-        return waitForUrlContains("pim");
+        return waitForUrlContains("pim");  // Método heredado
     }
 
     public boolean hasResults() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(resultsTable));
-            return true;
-        } catch (TimeoutException e) {
-            return false;
-        }
-    }
-
-    // ===============================
-    // MÉTODOS AUXILIARES
-    // ===============================
-    private boolean waitForUrlContains(String text) {
-        try {
-            wait.until(ExpectedConditions.urlContains(text));
-            return true;
-        } catch (TimeoutException e) {
-            return false;
-        }
-    }
-
-    private void waitForLoadingSpinnerToDisappear() {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(loadingSpinner));
-        } catch (TimeoutException e) {
-            // Si no aparece spinner, continuar
-        }
+        return isElementVisible(resultsTable);  // Método heredado
     }
 }
