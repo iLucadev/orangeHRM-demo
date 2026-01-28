@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!-- ============================================================
+     TESTNG CONFIGURATION - OrangeHRM Automation
+     ============================================================
+     This file configures TestNG to execute Cucumber scenarios
+     via the TestRunner class.
+     ============================================================ -->
+
+<suite name="OrangeHRM Test Suite" verbose="1">
+
+    <!-- ========================================
+         TEST CONFIGURATION
+         ======================================== -->
+    <test name="Flujo Completo E2E">
+        <classes>
+            <!-- TestRunner executes all Cucumber scenarios -->
+            <class name="ar.org.icaro.runner.TestRunner"/>
+        </classes>
+    </test>
+
+</suite>

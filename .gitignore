@@ -1,0 +1,364 @@
+# ============================================================
+# .gitignore - Test Automation Project
+# ============================================================
+# Based on templates from:
+# - https://github.com/cucumber/cucumber-jvm-starter-maven-java
+# - https://github.com/reportportal/example-cucumber-junit-selenium-logback-maven
+# - https://github.com/selenium-cucumber/selenium-cucumber-java
+# ============================================================
+
+# ============================================================
+# MAVEN
+# ============================================================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+pom.xml.bak
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ============================================================
+# JAVA
+# ============================================================
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# ============================================================
+# INTELLIJ IDEA
+# ============================================================
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# User-specific files
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# ============================================================
+# ECLIPSE
+# ============================================================
+.classpath
+.project
+.settings/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
+
+# ============================================================
+# VS CODE
+# ============================================================
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# ============================================================
+# NETBEANS
+# ============================================================
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# ============================================================
+# TESTING & REPORTS
+# ============================================================
+# Test reports
+test-output/
+test-results/
+surefire-reports/
+failsafe-reports/
+
+# Cucumber reports
+cucumber-reports/
+cucumber.json
+cucumber-report.json
+allure-results/
+allure-report/
+
+# Screenshots (keep resources, ignore generated)
+screenshots/
+*.png
+*.jpg
+*.jpeg
+!src/test/resources/**/*.png
+!src/test/resources/**/*.jpg
+
+# Coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# ============================================================
+# SELENIUM / WEBDRIVER
+# ============================================================
+# WebDriver binaries (if not using WebDriverManager)
+chromedriver
+chromedriver.exe
+geckodriver
+geckodriver.exe
+msedgedriver.exe
+IEDriverServer.exe
+
+# Selenium logs
+selenium-*.log
+webdriver.log
+
+# ============================================================
+# AI CODING TOOLS (2026)
+# ============================================================
+# Based on: https://docs.cursor.com/context/ignore-files
+# https://docs.windsurf.com/context-awareness/windsurf-ignore
+# https://www.anthropic.com/engineering/claude-code-best-practices
+
+# ===== CURSOR AI =====
+.cursor/
+.cursorignore
+*.cursor
+cursor.log
+
+# ===== GITHUB COPILOT =====
+# Copilot respects .gitignore by default
+# Copilot cache in JetBrains IDEs
+.idea/copilot/
+
+# GitHub Copilot instructions (if you want to keep them private)
+.github/copilot-instructions.md
+
+# ===== CLAUDE CODE / CLAUDE AI =====
+# Claude Code local settings and cache
+.claude/
+!.claude/commands/
+.claude/settings.local.json
+.claude/cache/
+.claude/logs/
+claude.log
+
+# Local Claude markdown (personal, not shared)
+CLAUDE.local.md
+*.local.md
+
+# Claude ignore file
+.claudeignore
+
+# ===== WINDSURF / CODEIUM =====
+# Windsurf AI assistant
+.windsurf/
+.windsurfignore
+
+# Codeium cache and config
+.codeium/
+.codeiumignore
+*.codeium
+
+# ===== TABNINE =====
+.tabnine/
+*.tabnine
+
+# ===== AMAZON CODEWHISPERER =====
+.aws/codewhisperer/
+
+# ===== CONTINUE.DEV =====
+.continue/
+continue.log
+
+# ===== AIDER =====
+.aider*
+.aider.chat.history*
+.aider.tags.cache*
+
+# ===== REPLIT AI / GHOSTWRITER =====
+.replit
+.replitai/
+
+# ===== MUTABLE AI =====
+.mutable/
+
+# ===== CODEX =====
+.codex/
+
+# ===== GENERAL AI ARTIFACTS =====
+.ai/
+.assistant/
+ai-context/
+ai-temp/
+ai-generated-temp/
+*.ai-context
+ai.log
+
+# AI chat histories and conversations
+.chat/
+chat-history/
+*.chat
+*.conversation
+
+# ============================================================
+# CREDENTIALS & SECRETS
+# ============================================================
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Credential files
+credentials.json
+secrets.json
+*.key
+*.pem
+*.p12
+*.jks
+
+# Config with secrets
+config.secret.*
+*-secret.*
+
+# ============================================================
+# LOCAL CONFIGURATION
+# ============================================================
+# Local settings and overrides
+*.local
+*.local.*
+config.local.*
+settings.local.*
+.env.local
+.env.*.local
+
+# Local test data
+test-data-local/
+**/test-data-local/
+
+# ============================================================
+# OPERATING SYSTEM
+# ============================================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Linux
+*~
+.directory
+.Trash-*
+.nfs*
+
+# ============================================================
+# BACKUP FILES
+# ============================================================
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*~
+
+# ============================================================
+# LOGS
+# ============================================================
+*.log
+logs/
+*.log.*
+log/
+
+# ============================================================
+# PACKAGE MANAGERS
+# ============================================================
+# Node (if using any JS tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================
+# DOCUMENTATION (GENERATED)
+# ============================================================
+# JavaDoc (generated)
+docs/javadoc/
+javadoc/
+
+# Keep markdown docs
+!*.md
+!docs/**/*.md
+
+# ============================================================
+# PROJECT SPECIFIC
+# ============================================================
+# Add your project-specific ignores here
+
+# Local test execution artifacts
+execution-logs/
+local-results/
+
+# Performance test results
+perf-results/
+
+# Database files (if using local test DB)
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================
+# KEEP EXCEPTIONS
+# ============================================================
+# Use ! to negate the ignore
+
+# Keep empty directories with .gitkeep
+!.gitkeep
+
+# Keep example configs
+!config.example.json
+!.env.example
+
+# Keep test resources
+!src/test/resources/**
+
+# ============================================================
+# END
+# ============================================================
