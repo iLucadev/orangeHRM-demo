@@ -44,12 +44,21 @@ import io.cucumber.testng.CucumberOptions;
         // ========================================
         // TAGS OPCIONALES
         // ========================================
-        // Descomentar para ejecutar solo escenarios específicos:
-        // tags = "@smoke"
-        // tags = "@login"
-        // tags = "@e2e"
+        // Ejemplos:
+        // tags = "@login"                    → Solo autenticación
+        // tags = "@negative"                 → Solo casos de error
+        // tags = "@login and @negative"      → Login fallidos
+        // tags = "not @slow"                 → Excluir tests lentos
 )
 public class TestRunner extends AbstractTestNGCucumberTests {
-    // Esta clase no necesita código
-    // La extensión de AbstractTestNGCucumberTests permite que TestNG ejecute Cucumber
+
+    /**
+     * Habilita ejecución paralela de escenarios Cucumber
+     * DataProvider con parallel=true permite múltiples threads
+     */
+    @Override
+    @org.testng.annotations.DataProvider(parallel = true)
+    public Object[][] scenarios() {
+        return super.scenarios();
+    }
 }

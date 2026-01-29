@@ -4,18 +4,21 @@
 <!-- ============================================================
      TESTNG CONFIGURATION - OrangeHRM Automation
      ============================================================
-     This file configures TestNG to execute Cucumber scenarios
-     via the TestRunner class.
+     Configuración para ejecución paralela de escenarios Cucumber
      ============================================================ -->
 
-<suite name="OrangeHRM Test Suite" verbose="1">
+<suite name="OrangeHRM Test Suite" verbose="1" parallel="methods" thread-count="3">
 
     <!-- ========================================
-         TEST CONFIGURATION
+         EJECUCIÓN PARALELA
+         ========================================
+         parallel="methods"  → Ejecuta métodos de test en paralelo
+         thread-count="3"    → 3 threads simultáneos (7 escenarios)
          ======================================== -->
+
     <test name="Flujo Completo E2E">
         <classes>
-            <!-- TestRunner executes all Cucumber scenarios -->
+            <!-- TestRunner ejecuta escenarios Cucumber en paralelo -->
             <class name="ar.org.icaro.runner.TestRunner"/>
         </classes>
     </test>
