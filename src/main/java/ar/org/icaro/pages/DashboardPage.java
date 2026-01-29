@@ -31,6 +31,13 @@ public class DashboardPage extends BasePage {
     @FindBy(xpath = "//a[text()='Logout']")
     private WebElement logoutLink;
 
+    /**
+     * loadingSpinner permanece como By (no @FindBy)
+     *
+     * Razón técnica: waitForElementToDisappear() requiere By locator
+     * para esperar invisibilidad. @FindBy es para elementos con los que
+     * interactuamos (click, type), no para esperar que desaparezcan.
+     */
     private By loadingSpinner = By.cssSelector(".oxd-loading-spinner");
 
     // ===============================

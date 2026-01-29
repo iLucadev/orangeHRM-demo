@@ -1,5 +1,6 @@
 package ar.org.icaro.pages;
 
+import ar.org.icaro.strategies.AutocompleteHandler;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,6 +29,13 @@ public class PIMPage extends BasePage {
     @FindBy(css = ".oxd-table-card")
     private WebElement resultsTable;
 
+    /**
+     * loadingSpinner permanece como By (no @FindBy)
+     *
+     * Razón técnica: waitForElementToDisappear() requiere By locator
+     * para esperar invisibilidad. @FindBy es para elementos con los que
+     * interactuamos (click, type), no para esperar que desaparezcan.
+     */
     private By loadingSpinner = By.cssSelector(".oxd-loading-spinner");
 
     // ===============================
@@ -43,17 +51,9 @@ public class PIMPage extends BasePage {
     public PIMPage searchEmployeeByName(String employeeName) {
         waitForElementToDisappear(loadingSpinner);
         type(employeeNameInput, employeeName);
-
-        // Esperar para autocomplete (OrangeHRM usa autocomplete)
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        AutocompleteHandler.waitForAutocomplete();
         click(searchButton);
         waitForElementToDisappear(loadingSpinner);
-
         return this;
     }
 

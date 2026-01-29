@@ -1,6 +1,6 @@
 package ar.org.icaro.pages;
 
-import org.openqa.selenium.NoSuchElementException;
+import ar.org.icaro.validators.ErrorMessageValidator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -104,26 +104,11 @@ public class LoginPage extends BasePage {
         return getText(errorMessage);
     }
 
-    /**
-     * Verifica si se muestra mensaje de campo requerido
-     */
     public boolean isRequiredFieldMessageDisplayed() {
-        try {
-            return !requiredFieldMessages.isEmpty() && requiredFieldMessages.get(0).isDisplayed();
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+        return ErrorMessageValidator.hasErrorMessage(requiredFieldMessages);
     }
 
-    /**
-     * Verifica si se muestran múltiples mensajes de campos requeridos
-     */
     public boolean areRequiredFieldMessagesDisplayed() {
-        try {
-            return requiredFieldMessages.size() >= 2 &&
-                   requiredFieldMessages.stream().allMatch(WebElement::isDisplayed);
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+        return ErrorMessageValidator.hasExpectedErrorCount(requiredFieldMessages, 2);
     }
 }
