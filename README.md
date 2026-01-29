@@ -102,7 +102,7 @@ orangehrm-automation/
         │   │   ├── Hooks.java             # Lifecycle (@Before/@After)
         │   │   └── TestRunner.java        # Cucumber config
         │   └── steps/
-        │       └── FlujoPrincipalSteps.java  # Step Definitions
+        │       └── MainFlowSteps.java  # Step Definitions
         │
         └── resources/features/
             └── flujo_completo.feature     # Escenarios Gherkin
