@@ -12,10 +12,9 @@ import org.testng.annotations.DataProvider;
  * - Define plugins de reportes
  * - Extiende AbstractTestNGCucumberTests para ejecutar con TestNG
  *
- * Ejecución paralela:
- * - Configurado en testng.xml con thread-count=${thread.count}
- * - Valor por defecto: 6 threads (definido en pom.xml)
- * - Override: mvn test -Dthread.count=4
+ * Ejecución secuencial:
+ * - Sin paralelización para máxima estabilidad con OrangeHRM Demo
+ * - Tests ejecutados uno a la vez
  */
 @CucumberOptions(
         // ========================================
@@ -59,15 +58,13 @@ import org.testng.annotations.DataProvider;
 public class TestRunner extends AbstractTestNGCucumberTests {
 
     /**
-     * Habilita ejecución paralela de escenarios Cucumber
+     * DataProvider para ejecución secuencial de escenarios Cucumber
      *
-     * DataProvider con parallel=true + testng.xml thread-count
-     * permite ejecutar múltiples escenarios simultáneamente.
-     *
-     * Cantidad de threads configurada en pom.xml (default: 6)
+     * Sin parallel=true → ejecuta escenarios uno a la vez
+     * Proporciona máxima estabilidad con OrangeHRM Demo
      */
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider
     public Object[][] scenarios() {
         return super.scenarios();
     }
