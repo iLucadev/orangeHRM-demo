@@ -93,8 +93,38 @@ public class PIMPage extends BasePage {
         return getResultCount() > 1;
     }
 
+    /**
+     * Limpia el campo de búsqueda y sincroniza el estado
+     *
+     * Fix: Agrega sincronización después de clear() para evitar
+     * race condition en búsquedas consecutivas con servidor lento
+     */
     public PIMPage clearSearch() {
+        // Limpiar campo
         employeeNameInput.clear();
+
+        // Esperar que el spinner desaparezca (si OrangeHRM procesó el clear)
+        waitForElementToDisappear(loadingSpinner);
+
+        // CRÍTICO: Esperar que la tabla de resultados DESAPAREZCA
+        // Si había resultados previos, deben limpiarse antes de la siguiente búsqueda
+        // Esto evita estado residual que confunde a OrangeHRM
+        try {
+            wait.until(driver -> {
+                try {
+                    return !resultsTable.isDisplayed();
+                } catch (org.openqa.selenium.NoSuchElementException e) {
+                    return true;  // Tabla ya no existe = OK
+                }
+            });
+        } catch (org.openqa.selenium.TimeoutException e) {
+            // Si después de 15s la tabla sigue visible, continuar igual
+            // Esto puede pasar si OrangeHRM no limpia los resultados
+        }
+
+        // Pequeño delay para estabilización del DOM
+        AutocompleteHandler.waitForAutocomplete(500);
+
         return this;
     }
 
