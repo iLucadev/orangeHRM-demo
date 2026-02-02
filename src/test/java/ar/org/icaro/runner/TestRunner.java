@@ -2,6 +2,7 @@ package ar.org.icaro.runner;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import org.testng.annotations.DataProvider;
 
 /**
  * TestRunner - Configuración de Cucumber + TestNG
@@ -10,6 +11,11 @@ import io.cucumber.testng.CucumberOptions;
  * - Configura ubicación de features y steps
  * - Define plugins de reportes
  * - Extiende AbstractTestNGCucumberTests para ejecutar con TestNG
+ *
+ * Ejecución paralela:
+ * - Configurado en testng.xml con thread-count=${thread.count}
+ * - Valor por defecto: 6 threads (definido en pom.xml)
+ * - Override: mvn test -Dthread.count=4
  */
 @CucumberOptions(
         // ========================================
@@ -54,10 +60,14 @@ public class TestRunner extends AbstractTestNGCucumberTests {
 
     /**
      * Habilita ejecución paralela de escenarios Cucumber
-     * DataProvider con parallel=true permite múltiples threads
+     *
+     * DataProvider con parallel=true + testng.xml thread-count
+     * permite ejecutar múltiples escenarios simultáneamente.
+     *
+     * Cantidad de threads configurada en pom.xml (default: 6)
      */
     @Override
-    @org.testng.annotations.DataProvider(parallel = true)
+    @DataProvider(parallel = true)
     public Object[][] scenarios() {
         return super.scenarios();
     }

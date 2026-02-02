@@ -2,6 +2,7 @@ package ar.org.icaro.pages;
 
 import ar.org.icaro.strategies.AutocompleteHandler;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,6 +29,9 @@ public class PIMPage extends BasePage {
 
     @FindBy(css = ".oxd-table-card")
     private WebElement resultsTable;
+
+    @FindBy(css = ".oxd-toast-content--info, .orangehrm-horizontal-padding span")
+    private WebElement noRecordsMessage;
 
     /**
      * loadingSpinner permanece como By (no @FindBy)
@@ -66,5 +70,38 @@ public class PIMPage extends BasePage {
 
     public boolean hasResults() {
         return isElementVisible(resultsTable);
+    }
+
+    public boolean hasNoResults() {
+        return isElementVisible(noRecordsMessage);
+    }
+
+    public String getNoResultsMessage() {
+        return getText(noRecordsMessage);
+    }
+
+    public int getResultCount() {
+        waitForElementToDisappear(loadingSpinner);
+        try {
+            return driver.findElements(By.cssSelector(".oxd-table-card")).size();
+        } catch (NoSuchElementException e) {
+            return 0;
+        }
+    }
+
+    public boolean hasMultipleResults() {
+        return getResultCount() > 1;
+    }
+
+    public PIMPage clearSearch() {
+        employeeNameInput.clear();
+        return this;
+    }
+
+    public PIMPage clickSearchWithoutInput() {
+        waitForElementToDisappear(loadingSpinner);
+        click(searchButton);
+        waitForElementToDisappear(loadingSpinner);
+        return this;
     }
 }

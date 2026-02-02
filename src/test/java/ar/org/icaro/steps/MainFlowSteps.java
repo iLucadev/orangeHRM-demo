@@ -7,6 +7,8 @@ import ar.org.icaro.runner.Hooks;
 import io.cucumber.java.en.*;
 import org.testng.Assert;
 
+import java.util.List;
+
 /**
  * Step Definitions para escenarios de autenticación y gestión de empleados
  */
@@ -131,6 +133,99 @@ public class MainFlowSteps {
         Assert.assertTrue(
                 loginPage.areRequiredFieldMessagesDisplayed(),
                 "Deberían mostrarse mensajes de campos requeridos"
+        );
+    }
+
+    @Then("no deberían mostrarse resultados de búsqueda")
+    public void noSearchResultsShouldBeDisplayed() {
+        Assert.assertTrue(
+                pimPage.hasNoResults(),
+                "No debería haber resultados de búsqueda"
+        );
+    }
+
+    @Then("debería mostrarse el mensaje {string}")
+    public void iShouldSeeMessage(String expectedMessage) {
+        String actualMessage = pimPage.getNoResultsMessage();
+        Assert.assertTrue(
+                actualMessage.contains(expectedMessage),
+                "El mensaje debería contener: " + expectedMessage
+        );
+    }
+
+    @Then("debería mostrarse {int} resultado de búsqueda")
+    public void iShouldSeeResultCount(int expectedCount) {
+        Assert.assertEquals(
+                pimPage.getResultCount(),
+                expectedCount,
+                "Debería haber " + expectedCount + " resultado(s)"
+        );
+    }
+
+    @Then("deberían mostrarse múltiples resultados de búsqueda")
+    public void multipleSearchResultsShouldBeDisplayed() {
+        Assert.assertTrue(
+                pimPage.hasMultipleResults(),
+                "Deberían mostrarse múltiples resultados de búsqueda"
+        );
+    }
+
+    @When("limpio el campo de búsqueda")
+    public void iClearSearchField() {
+        pimPage.clearSearch();
+    }
+
+    @When("hago click en buscar sin ingresar datos")
+    public void iClickSearchWithoutInput() {
+        pimPage.clickSearchWithoutInput();
+    }
+
+    @Then("debería ver los widgets del Dashboard")
+    public void iShouldSeeDashboardWidgets() {
+        Assert.assertTrue(
+                dashboardPage.getVisibleWidgetCount() >= 1,
+                "Deberían mostrarse widgets en el Dashboard"
+        );
+    }
+
+    @Then("debería ver el widget {string}")
+    public void iShouldSeeWidget(String widgetName) {
+        boolean isVisible = false;
+        switch(widgetName.toLowerCase()) {
+            case "time at work":
+                isVisible = dashboardPage.isTimeAtWorkWidgetVisible();
+                break;
+            case "my actions":
+                isVisible = dashboardPage.isMyActionsWidgetVisible();
+                break;
+            case "quick launch":
+                isVisible = dashboardPage.isQuickLaunchWidgetVisible();
+                break;
+        }
+        Assert.assertTrue(
+                isVisible,
+                "El widget '" + widgetName + "' debería estar visible"
+        );
+    }
+
+    @Then("debería ver el menú lateral de navegación")
+    public void iShouldSeeSideMenu() {
+        Assert.assertTrue(
+                dashboardPage.isSideMenuVisible(),
+                "El menú lateral debería estar visible"
+        );
+    }
+
+    @Then("el menú lateral debería contener los módulos principales")
+    public void sideMenuShouldContainMainModules() {
+        List<String> menuItems = dashboardPage.getSideMenuItems();
+        Assert.assertTrue(
+                menuItems.size() >= 3,
+                "El menú lateral debería contener al menos 3 módulos"
+        );
+        Assert.assertTrue(
+                menuItems.stream().anyMatch(item -> item.contains("PIM")),
+                "El menú lateral debería contener el módulo PIM"
         );
     }
 }
