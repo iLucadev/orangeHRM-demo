@@ -7,13 +7,22 @@
      Configuración para ejecución paralela de escenarios Cucumber
      ============================================================ -->
 
-<suite name="OrangeHRM Test Suite" verbose="1" parallel="methods" thread-count="3">
+<suite name="OrangeHRM Test Suite" verbose="1" parallel="methods" thread-count="${thread.count}">
 
     <!-- ========================================
          EJECUCIÓN PARALELA
          ========================================
-         parallel="methods"  → Ejecuta métodos de test en paralelo
-         thread-count="3"    → 3 threads simultáneos (7 escenarios)
+         parallel="methods"   → Ejecuta métodos de test en paralelo
+         thread-count="${thread.count}"  → Variable Maven (default: 2)
+
+         Configuración:
+         - Valor por defecto: 2 threads (óptimo para OrangeHRM Demo)
+         - Override manual: mvn test -Dthread.count=1
+         - Definido en: pom.xml <properties>
+
+         NOTA: OrangeHRM Demo es un servidor público compartido.
+         Usar muchos threads causa TimeoutException por sobrecarga.
+         Recomendación: 2 threads máximo para estabilidad.
          ======================================== -->
 
     <test name="Flujo Completo E2E">

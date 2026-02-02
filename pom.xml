@@ -31,6 +31,23 @@
         <cucumber.version>7.13.0</cucumber.version>
         <testng.version>7.8.0</testng.version>
         <webdrivermanager.version>5.5.3</webdrivermanager.version>
+
+        <!-- Parallel Execution Configuration -->
+        <!--
+            thread.count: Cantidad de threads para ejecución paralela
+
+            IMPORTANTE - Limitación de OrangeHRM Demo:
+            OrangeHRM Demo (https://opensource-demo.orangehrmlive.com/) es un
+            servidor público compartido con limitaciones de infraestructura.
+
+            Comportamiento observado:
+            - Muchos threads: TimeoutException frecuentes (servidor sobrecargado)
+            - Pocos threads: Mejor estabilidad, pero más lento
+
+            Recomendación: 2 threads (balance óptimo velocidad/estabilidad)
+            Override manual: mvn test -Dthread.count=2
+        -->
+        <thread.count>2</thread.count>
     </properties>
 
     <!-- ============================================================
@@ -108,6 +125,24 @@
          BUILD CONFIGURATION
          ============================================================ -->
     <build>
+        <!-- Enable filtering for test resources -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+
         <plugins>
 
             <!-- Maven Compiler Plugin -->
@@ -128,9 +163,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <!-- Point to testng.xml -->
+                    <!-- Point to filtered testng.xml in target -->
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>${project.build.testOutputDirectory}/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
