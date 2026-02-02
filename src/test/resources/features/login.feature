@@ -1,4 +1,5 @@
 # language: es
+@login @regression
 Característica: Autenticación en OrangeHRM
   Como usuario del sistema OrangeHRM
   Quiero poder autenticarme con credenciales válidas
@@ -7,6 +8,10 @@ Característica: Autenticación en OrangeHRM
   Antecedentes:
     Dado que estoy en la página de login de OrangeHRM
 
+  # ============================================================
+  # SCENARIO TRADICIONAL: Login exitoso (caso único)
+  # ============================================================
+  @positive @smoke
   Escenario: Login exitoso con credenciales válidas
     Cuando ingreso el usuario "Admin"
     Y ingreso la contraseña "admin123"
@@ -14,26 +19,42 @@ Característica: Autenticación en OrangeHRM
     Entonces debería estar en el Dashboard
     Y debería ver el título "Dashboard"
 
-  Escenario: Login fallido con credenciales inválidas
-    Cuando ingreso el usuario "UsuarioInvalido"
-    Y ingreso la contraseña "claveIncorrecta"
+  # ============================================================
+  # DATA-DRIVEN: Login fallido con múltiples casos de error
+  # ============================================================
+  @negative @data-driven
+  Esquema del escenario: Login fallido con credenciales inválidas
+    Cuando ingreso el usuario "<usuario>"
+    Y ingreso la contraseña "<password>"
     Y hago click en el botón Login
     Entonces debería ver un mensaje de error
     Y debería permanecer en la página de login
 
-  Escenario: Login fallido con campo de usuario vacío
-    Cuando ingreso la contraseña "admin123"
+    @invalid-credentials
+    Ejemplos: Credenciales incorrectas
+      | usuario          | password        |
+      | UsuarioInvalido  | claveIncorrecta |
+      | Admin            | wrongPassword   |
+      | FakeUser         | admin123        |
+
+  # ============================================================
+  # DATA-DRIVEN: Validación de campos requeridos
+  # ============================================================
+  @negative @data-driven @unstable
+  Esquema del escenario: Login fallido con campos vacíos
+    Cuando ingreso el usuario "<usuario>"
+    Y ingreso la contraseña "<password>"
     Y hago click en el botón Login
     Entonces debería ver un mensaje de campo requerido
     Y debería permanecer en la página de login
 
-  Escenario: Login fallido con campo de contraseña vacío
-    Cuando ingreso el usuario "Admin"
-    Y hago click en el botón Login
-    Entonces debería ver un mensaje de campo requerido
-    Y debería permanecer en la página de login
+    @edge-cases
+    Ejemplos: Un campo vacío
+      | usuario | password  |
+      |         | admin123  |
+      | Admin   |           |
 
-  Escenario: Login fallido con ambos campos vacíos
-    Cuando hago click en el botón Login
-    Entonces debería ver mensajes de campos requeridos
-    Y debería permanecer en la página de login
+    @critical
+    Ejemplos: Ambos campos vacíos
+      | usuario | password  |
+      |         |           |

@@ -1,9 +1,11 @@
 # language: es
+@e2e @smoke
 Característica: Flujo completo E2E en OrangeHRM
   Como usuario del sistema OrangeHRM
   Quiero realizar un flujo completo desde login hasta logout
   Para validar la integración entre módulos
 
+  @positive
   Escenario: Flujo completo - Login, búsqueda y logout
     Dado que estoy en la página de login de OrangeHRM
     Cuando ingreso el usuario "Admin"
