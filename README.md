@@ -118,7 +118,7 @@ orangehrm-automation/
 |---------|------------|
 | Admin   | admin123   |
 
-**Empleado de prueba**: John (usado en búsquedas)
+**Empleados de prueba**: Amelia, Charles, Emily, James (usados en búsquedas PIM)
 
 ---
 
@@ -158,6 +158,35 @@ OrangeHRM puede ser lento. Los waits están configurados en 15 segundos. Verific
 - Conexión a internet estable
 - Chrome actualizado
 - OrangeHRM Demo disponible
+
+---
+
+## ⚠️ Limitaciones Conocidas
+
+### Servidor Demo Compartido
+
+OrangeHRM Demo ([https://opensource-demo.orangehrmlive.com/](https://opensource-demo.orangehrmlive.com/)) es un **servidor público compartido** con limitaciones de infraestructura.
+
+**Comportamiento esperado:**
+- ⏱️ **Timeouts intermitentes**: Algunos tests pueden fallar aleatoriamente con `TimeoutException`
+- 🔄 **Variabilidad entre ejecuciones**: Los mismos tests pueden pasar o fallar en diferentes runs
+- 🚦 **Limitación de carga**: El servidor tiene rate limiting y puede rechazar conexiones bajo alta carga
+
+**Configuración recomendada:**
+
+```bash
+# Usar 2 threads máximo para evitar sobrecarga del servidor
+mvn test -Dthread.count=2
+```
+
+**Valor por defecto**: Configurado en `pom.xml` con `<thread.count>2</thread.count>`
+
+**Tests marcados como `@unstable`**:
+- Pueden fallar intermitentemente por problemas del servidor
+- No indica errores en el código de automatización
+- Para excluirlos: ajustar tags en `TestRunner.java`
+
+**Recomendación para producción**: Usar una instancia privada de OrangeHRM en lugar del servidor demo público.
 
 ---
 
