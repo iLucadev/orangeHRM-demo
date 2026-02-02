@@ -104,11 +104,35 @@ public class LoginPage extends BasePage {
         return getText(errorMessage);
     }
 
+    /**
+     * Verifica si se muestra mensaje de campo requerido
+     *
+     * Fix: Agrega wait explícito para que los mensajes se rendericen
+     * antes de validar (evita race condition con servidor lento)
+     */
     public boolean isRequiredFieldMessageDisplayed() {
-        return ErrorMessageValidator.hasErrorMessage(requiredFieldMessages);
+        try {
+            // Esperar que al menos 1 mensaje de error esté visible
+            wait.until(driver -> requiredFieldMessages.size() >= 1);
+            return ErrorMessageValidator.hasErrorMessage(requiredFieldMessages);
+        } catch (org.openqa.selenium.TimeoutException e) {
+            return false;
+        }
     }
 
+    /**
+     * Verifica si se muestran múltiples mensajes de campos requeridos
+     *
+     * Fix: Agrega wait explícito para que los mensajes se rendericen
+     * antes de validar (evita race condition con servidor lento)
+     */
     public boolean areRequiredFieldMessagesDisplayed() {
-        return ErrorMessageValidator.hasExpectedErrorCount(requiredFieldMessages, 2);
+        try {
+            // Esperar que al menos 2 mensajes de error estén visibles
+            wait.until(driver -> requiredFieldMessages.size() >= 2);
+            return ErrorMessageValidator.hasExpectedErrorCount(requiredFieldMessages, 2);
+        } catch (org.openqa.selenium.TimeoutException e) {
+            return false;
+        }
     }
 }
